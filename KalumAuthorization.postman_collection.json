@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "35f9b23d-7f07-488a-9495-207121c8c800",
+		"name": "KalumAuthorization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Create token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Email\" : \"edwintumax@gmail.com\",\n\t\"Password\" : \"Guatemala.2020\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5002/KalumAuthentication/v1/Cuentas/Crear",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"KalumAuthentication",
+						"v1",
+						"Cuentas",
+						"Crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Login de usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Email\" : \"edwintumax@gmail.com\",\n\t\"Password\" : \"Guatemala.2020\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5007/KalumAutenticacion/v1/Cuentas/Login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5007",
+					"path": [
+						"KalumAutenticacion",
+						"v1",
+						"Cuentas",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Asignar rol a usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"UserId\" : \"a39625cf-69fc-4701-a588-dec448f89626\",\n\t\"RolName\" : \"User\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5007/KalumAutenticacion/v1/Usuarios/AsignarUsuarioRol",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5007",
+					"path": [
+						"KalumAutenticacion",
+						"v1",
+						"Usuarios",
+						"AsignarUsuarioRol"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Listar Usuarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5007/KalumAutenticacion/v1/Usuarios",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5007",
+					"path": [
+						"KalumAutenticacion",
+						"v1",
+						"Usuarios"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
