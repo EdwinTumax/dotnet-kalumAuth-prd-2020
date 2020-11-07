@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,11 +15,14 @@ using Microsoft.EntityFrameworkCore;
 using KalumAutenticacion.Context;
 using Microsoft.AspNetCore.Identity;
 using KalumAutenticacion.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KalumAutenticacion
 {
     public class Startup
     {
+        readonly string OriginsKalum = "_originsKalum";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +33,22 @@ namespace KalumAutenticacion
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => options.TokenValidationParameters = new 
+                    TokenValidationParameters{
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
+                        ClockSkew = TimeSpan.Zero                        
+                    });            
+            services.AddCors(options => {
+                options.AddPolicy(name: OriginsKalum, builder =>{
+                    builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
+                });
+            });
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
             });
@@ -45,13 +65,14 @@ namespace KalumAutenticacion
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(OriginsKalum);
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace KalumAutenticacion.Controllers
 {
     [Route("KalumAutenticacion/v1/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class UsuariosController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -37,6 +41,14 @@ namespace KalumAutenticacion.Controllers
                 usuarios.Add(new UserInfo(){Id = item.Id, UserName = item.UserName, NormalizedUserName = item.NormalizedUserName, Email = item.Email, Password = item.PasswordHash, roles = userRoles  });
             }
             return usuarios;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<UserInfo>> Delete(string id){
+            var usuario = await userManager.FindByIdAsync(id);
+            var resuesta = await userManager.DeleteAsync(usuario);            
+            return new UserInfo(){Id = usuario.Id, UserName = usuario.UserName, 
+            NormalizedUserName = usuario.NormalizedUserName, Email = usuario.Email, Password = usuario.PasswordHash};
         }
 
         [HttpPost("AsignarUsuarioRol")]
