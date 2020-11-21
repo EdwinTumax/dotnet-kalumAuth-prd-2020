@@ -43,6 +43,38 @@ namespace KalumAutenticacion.Controllers
             return usuarios;
         }
 
+        [HttpGet("{id}",Name = "GetUsuario")]
+        public async Task<ActionResult<UserInfo>> Get(string id)
+        {
+            var usuario = await userManager.FindByIdAsync(id);
+            if(usuario != null ){
+                return new UserInfo(){Id = usuario.Id, UserName = usuario.UserName, 
+                    NormalizedUserName = usuario.NormalizedUserName, Email = usuario.Email, Password = usuario.PasswordHash};
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(string id, [FromBody] UserInfo userInfo){
+            var usuario = await userManager.FindByIdAsync(id);            
+            usuario.UserName = userInfo.UserName;
+            usuario.NormalizedUserName = userInfo.NormalizedUserName;
+            usuario.Email = userInfo.Email;                       
+            if(usuario != null)
+            {
+                await userManager.UpdateAsync(usuario);
+                await userManager.ChangePasswordAsync(usuario,usuario.PasswordHash,userInfo.Password);
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserInfo>> Delete(string id){
             var usuario = await userManager.FindByIdAsync(id);
