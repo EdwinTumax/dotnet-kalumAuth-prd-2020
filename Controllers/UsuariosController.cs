@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using KalumAutenticacion.Context;
@@ -42,6 +44,45 @@ namespace KalumAutenticacion.Controllers
             }
             return usuarios;
         }
+
+        [HttpGet("{numeroPagina}",Name = "GetUsuariosPage")]
+        [Route("page/{numeroPagina}")]
+        public async Task<ActionResult<UsuarioPaginacion>> GetUsuariosPage(int numeroPagina = 0)
+        {
+            int cantidadRegistros = 5;        
+            var query = this.context.Users.AsQueryable();
+            int totalRegistros = await query.CountAsync();
+            int totalPaginas = (int) Math.Ceiling((Double) totalRegistros / cantidadRegistros);
+            var users = await query.Skip(cantidadRegistros * numeroPagina)
+                .Take(cantidadRegistros).ToListAsync();
+            UsuarioPaginacion usuarioPaginacion = new UsuarioPaginacion();
+            usuarioPaginacion.Number = numeroPagina;
+            usuarioPaginacion.TotalPages = totalPaginas;
+            List<UserInfo> usuarios = new List<UserInfo>();
+            foreach(var item in users)
+            {
+                var userRoles = await userManager.GetRolesAsync(item);
+                usuarios.Add(new UserInfo() 
+                {
+                    Id = item.Id, 
+                    UserName = item.UserName, 
+                    NormalizedUserName = item.NormalizedUserName, 
+                    Email = item.Email, 
+                    Password = item.PasswordHash, roles = userRoles
+                });
+            }
+            if(numeroPagina == 0)
+            {
+                usuarioPaginacion.First = true; 
+            } 
+            else if(numeroPagina >= (totalPaginas - 1))
+            {
+                usuarioPaginacion.Last = true;
+            }
+            usuarioPaginacion.Content = usuarios;
+            return usuarioPaginacion;            
+        }
+
 
         [HttpGet("{id}",Name = "GetUsuario")]
         public async Task<ActionResult<UserInfo>> Get(string id)
