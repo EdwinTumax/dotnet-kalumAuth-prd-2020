@@ -84,7 +84,7 @@ namespace KalumAutenticacion.Controllers
         }
 
 
-        [HttpGet("{id}",Name = "GetUsuario")]
+        [HttpGet("search/{id}",Name = "GetUsuario")]
         public async Task<ActionResult<UserInfo>> Get(string id)
         {
             var usuario = await userManager.FindByIdAsync(id);

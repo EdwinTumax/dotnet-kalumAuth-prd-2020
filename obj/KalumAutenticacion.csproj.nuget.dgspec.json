@@ -1,34 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Developer\\Documents\\2020\\net\\ApiFinal\\KalumAutenticacion\\KalumAutenticacion.csproj": {}
+    "/Users/edwintumax/Documents/kinal/net/prod/dotnet-kalumAuth-prd-2020/KalumAutenticacion.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Developer\\Documents\\2020\\net\\ApiFinal\\KalumAutenticacion\\KalumAutenticacion.csproj": {
+    "/Users/edwintumax/Documents/kinal/net/prod/dotnet-kalumAuth-prd-2020/KalumAutenticacion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Developer\\Documents\\2020\\net\\ApiFinal\\KalumAutenticacion\\KalumAutenticacion.csproj",
+        "projectUniqueName": "/Users/edwintumax/Documents/kinal/net/prod/dotnet-kalumAuth-prd-2020/KalumAutenticacion.csproj",
         "projectName": "KalumAutenticacion",
-        "projectPath": "C:\\Users\\Developer\\Documents\\2020\\net\\ApiFinal\\KalumAutenticacion\\KalumAutenticacion.csproj",
-        "packagesPath": "C:\\Users\\Developer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Developer\\Documents\\2020\\net\\ApiFinal\\KalumAutenticacion\\obj\\",
+        "projectPath": "/Users/edwintumax/Documents/kinal/net/prod/dotnet-kalumAuth-prd-2020/KalumAutenticacion.csproj",
+        "packagesPath": "/Users/edwintumax/.nuget/packages/",
+        "outputPath": "/Users/edwintumax/Documents/kinal/net/prod/dotnet-kalumAuth-prd-2020/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Developer\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/edwintumax/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -39,29 +35,38 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[3.1.5, )"
+              "version": "[6.0.1, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.5, )"
+              "version": "[6.0.1, )"
             },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
-              "version": "[3.1.5, )"
+              "version": "[6.0.1, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.5, )"
+              "version": "[6.0.1, )"
             },
-            "System.IdentityModel.Tokens.Jwt": {
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[6.6.0, )"
+              "version": "[6.0.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
             }
           },
           "imports": [
@@ -82,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
         }
       }
     }
