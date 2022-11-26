@@ -40,7 +40,7 @@ namespace KalumAutenticacion.Controllers
             {
                 var userRoles = await userManager.GetRolesAsync(item);
             
-                usuarios.Add(new UserInfo(){Id = item.Id, UserName = item.UserName, NormalizedUserName = item.NormalizedUserName, Email = item.Email, Password = item.PasswordHash, roles = userRoles  });
+                usuarios.Add(new UserInfo(){Id = item.Id, UserName = item.UserName, NormalizedUserName = item.NormalizedUserName, Email = item.Email, Password = item.PasswordHash, Roles = userRoles  });
             }
             return usuarios;
         }
@@ -68,7 +68,7 @@ namespace KalumAutenticacion.Controllers
                     UserName = item.UserName, 
                     NormalizedUserName = item.NormalizedUserName, 
                     Email = item.Email, 
-                    Password = item.PasswordHash, roles = userRoles
+                    Password = item.PasswordHash, Roles = userRoles
                 });
             }
             if(numeroPagina == 0)

@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Net.WebSockets;
 //using Internal;
 using System;
 using System.Collections.Generic;
@@ -33,10 +35,12 @@ namespace KalumAutenticacion.Controllers
         public async Task<ActionResult<UserToken>> Create([FromBody] UserInfo value)
         {
             var userInfo = new ApplicationUser { UserName = value.Email, Email = value.Email};
-            var result = await userManager.CreateAsync(userInfo,value.Password);
+            var result = await userManager.CreateAsync(userInfo,value.Password);            
             if(result.Succeeded)
             {
-                return Buildtoken(value,new List<String>());
+                var usuario = await userManager.FindByIdAsync(userInfo.Id);                
+                await userManager.AddToRoleAsync(userInfo, value.Roles.ElementAt(0));                
+                return Buildtoken(usuario, value.Roles != null ? value.Roles : new List<String>());
             }
             else
             {
@@ -51,7 +55,7 @@ namespace KalumAutenticacion.Controllers
             if(result.Succeeded){
                 var usuario = await userManager.FindByEmailAsync(value.Email);
                 var roles = await userManager.GetRolesAsync(usuario);
-                return Buildtoken(value,roles);
+                return Buildtoken(usuario,roles);
             }
             else
             {
@@ -60,13 +64,17 @@ namespace KalumAutenticacion.Controllers
             }    
         }
 
-        private UserToken Buildtoken(UserInfo userInfo, IList<string> roles)
+        private UserToken Buildtoken(ApplicationUser userInfo, IList<string> roles)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
                 new Claim("api","kalum"),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim("username",userInfo.NormalizedUserName),
+                new Claim("email", userInfo.Email),
+                //new Claim("Apellidos","Tumax Chaclan"),
+                //new Claim("Nombres","Edwin Rolando"),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())                
             };
             foreach(var rol in roles)
             {
