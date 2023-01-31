@@ -34,13 +34,17 @@ namespace KalumAutenticacion.Controllers
         [HttpPost("Crear")]
         public async Task<ActionResult<UserToken>> Create([FromBody] UserInfo value)
         {
-            var userInfo = new ApplicationUser { UserName = value.Email, Email = value.Email};
+            var userInfo = new ApplicationUser { UserName = value.UserName, Email = value.Email};
             var result = await userManager.CreateAsync(userInfo,value.Password);            
             if(result.Succeeded)
             {
-                var usuario = await userManager.FindByIdAsync(userInfo.Id);                
-                await userManager.AddToRoleAsync(userInfo, value.Roles.ElementAt(0));                
-                return Buildtoken(usuario, value.Roles != null ? value.Roles : new List<String>());
+                //var usuario = await userManager.FindByIdAsync(userInfo.Id);                
+                if(value.Roles.Count == 0)
+                {
+                    value.Roles.Add("ROLE_USER");
+                }
+                await userManager.AddToRoleAsync(userInfo, value.Roles.ElementAt(0));    
+                return Buildtoken(userInfo, value.Roles != null ? value.Roles : new List<String>());
             }
             else
             {
@@ -50,10 +54,11 @@ namespace KalumAutenticacion.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo value)
         {
-            var result = await signInManager.PasswordSignInAsync(value.Email,value.Password,
+            var result = await signInManager.PasswordSignInAsync(value.UserName,value.Password,
                 isPersistent:false,lockoutOnFailure:false);
             if(result.Succeeded){
-                var usuario = await userManager.FindByEmailAsync(value.Email);
+                //var usuario = await userManager.FindByEmailAsync(value.Email);
+                var usuario = await userManager.FindByNameAsync(value.UserName);
                 var roles = await userManager.GetRolesAsync(usuario);
                 return Buildtoken(usuario,roles);
             }
@@ -70,7 +75,7 @@ namespace KalumAutenticacion.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
                 new Claim("api","kalum"),
-                new Claim("username",userInfo.NormalizedUserName),
+                new Claim("username",userInfo.UserName),
                 new Claim("email", userInfo.Email),
                 //new Claim("Apellidos","Tumax Chaclan"),
                 //new Claim("Nombres","Edwin Rolando"),
